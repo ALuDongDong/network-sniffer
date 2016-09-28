@@ -1,0 +1,5 @@
+package edu.hfut.sniffer.parser.domain;
+
+public enum Protocol {
+	IPv4, IPv6, ARP, ICMP, TCP, UDP, GRE, PAYLOAD, FTP, HTTP, MSN, POP3, SMTP, SNMP, TELNET, SMB, SMB2, NETBIOS, DHCP, SSH, WHOIS, DNS, SQLNET, TFTP, FINGER, NTP, IMAP, BGP, SYSLOG, MYSQL, POSTGRES, MSSQL
+}
