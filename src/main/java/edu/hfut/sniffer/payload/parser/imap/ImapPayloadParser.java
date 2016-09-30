@@ -1,4 +1,4 @@
-package edu.hfut.sniffer.payload.imap.parser;
+package edu.hfut.sniffer.payload.parser.imap;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;

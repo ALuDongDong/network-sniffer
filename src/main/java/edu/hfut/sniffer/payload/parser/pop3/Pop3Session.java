@@ -1,4 +1,4 @@
-package edu.hfut.sniffer.payload.pop3.parser;
+package edu.hfut.sniffer.payload.parser.pop3;
 
 import edu.hfut.sniffer.parser.domain.ChainBuffer;
 

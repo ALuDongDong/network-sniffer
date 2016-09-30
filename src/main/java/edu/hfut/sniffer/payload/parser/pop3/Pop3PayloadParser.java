@@ -1,4 +1,4 @@
-package edu.hfut.sniffer.payload.smtp.parser;
+package edu.hfut.sniffer.payload.parser.pop3;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -14,21 +14,21 @@ import edu.hfut.sniffer.parser.domain.TcpSessionKeyImpl;
 import edu.hfut.sniffer.payload.parser.IPayloadParser;
 
 /**
- * SMTP协议负载解析
+ * POP3协议负载解析
  * @author donglei
  * @date: 2016年8月19日 下午4:30:18
  */
-public class SmtpPayloadParser implements IPayloadParser {
+public class Pop3PayloadParser implements IPayloadParser {
 
-	private static final Logger logger = LoggerFactory.getLogger(SmtpPayloadParser.class);
+	private static final Logger logger = LoggerFactory.getLogger(Pop3PayloadParser.class);
 
-	private static final int SMTP_PORT_1 = 25;
-	private static final int SMTP_PORT_2 = 587;
+	private static final int POP3_PORT = 110;
 
-	private SmtpDecoder smtpDecoder;
+	private Pop3Decoder pop3Decoder;
 
-	public SmtpPayloadParser() {
-		this.smtpDecoder = new SmtpDecoder();
+
+	public Pop3PayloadParser() {
+		this.pop3Decoder = new Pop3Decoder();
 	}
 
 	@Override
@@ -38,9 +38,9 @@ public class SmtpPayloadParser implements IPayloadParser {
 					InetAddress.getByName(frame.getDesIp()), frame.getSrcPort(), frame.getDesPort());
 			TcpDirection direction = getDirection(frame, payload);
 			if (direction == TcpDirection.ToClient) {
-				return this.smtpDecoder.handleRx(sessionKey, payload, frame.getTimestamp());
+				return this.pop3Decoder.handleRx(sessionKey, payload, frame.getTimestamp());
 			} else {
-				return this.smtpDecoder.handleTx(sessionKey, payload, frame.getTimestamp());
+				return this.pop3Decoder.handleTx(sessionKey, payload, frame.getTimestamp());
 			}
 
 		} catch (UnknownHostException e) {
@@ -50,7 +50,7 @@ public class SmtpPayloadParser implements IPayloadParser {
 	}
 
 	public TcpDirection getDirection(Frame frame, byte[] payload) {
-		if (frame.getSrcPort() == SMTP_PORT_1 || frame.getSrcPort() == SMTP_PORT_2) {
+		if (frame.getSrcPort() == POP3_PORT) {
 			return TcpDirection.ToClient;
 		} else {
 			return TcpDirection.ToServer;

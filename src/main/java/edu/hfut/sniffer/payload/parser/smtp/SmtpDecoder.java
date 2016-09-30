@@ -1,4 +1,4 @@
-package edu.hfut.sniffer.payload.smtp.parser;
+package edu.hfut.sniffer.payload.parser.smtp;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;

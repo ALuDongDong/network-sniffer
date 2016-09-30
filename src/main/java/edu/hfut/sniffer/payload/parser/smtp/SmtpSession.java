@@ -1,4 +1,4 @@
-package edu.hfut.sniffer.payload.smtp.parser;
+package edu.hfut.sniffer.payload.parser.smtp;
 
 import edu.hfut.sniffer.parser.domain.Buffer;
 import edu.hfut.sniffer.parser.domain.ChainBuffer;

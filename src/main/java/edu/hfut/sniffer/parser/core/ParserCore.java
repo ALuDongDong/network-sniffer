@@ -18,12 +18,12 @@ import edu.hfut.sniffer.parser.domain.Buffer;
 import edu.hfut.sniffer.parser.domain.ChainBuffer;
 import edu.hfut.sniffer.parser.domain.ProcessStatus;
 import edu.hfut.sniffer.parser.domain.Protocol;
-import edu.hfut.sniffer.payload.imap.parser.ImapPayloadParser;
 import edu.hfut.sniffer.payload.parser.IPayloadParser;
 import edu.hfut.sniffer.payload.parser.ftp.FtpPayLoadParser;
 import edu.hfut.sniffer.payload.parser.http.HttpPayloadParser;
-import edu.hfut.sniffer.payload.pop3.parser.Pop3PayloadParser;
-import edu.hfut.sniffer.payload.smtp.parser.SmtpPayloadParser;
+import edu.hfut.sniffer.payload.parser.imap.ImapPayloadParser;
+import edu.hfut.sniffer.payload.parser.pop3.Pop3PayloadParser;
+import edu.hfut.sniffer.payload.parser.smtp.SmtpPayloadParser;
 
 /**
  * 解析数据帧

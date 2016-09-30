@@ -135,36 +135,33 @@ public class HttpDecoder implements TcpProcessor {
 		}
 	}
 
-	private void saveBody(HttpResponse response, String fileName) {
+	private void saveBody(HttpResponse response, String fileName) throws Exception {
 		String path = Configs.getProps(Configs.OUTPUT_DIR);
 		try (FileOutputStream outputStream = new FileOutputStream(new File(path + File.separator + fileName))) {
 			HttpEntity entity = response.getEntity();
 			byte[] data = new byte[1024];
 			InputStream inputStream = null;
 			try {
-				try {
-					inputStream = entity.getContent();
-					// "Transfer-Encoding: chunked" 已经在conn.receiveResponseEntity(response)处理了，所以不要处理
-					// "Content-Encoding: gzip"
-					Header contentEncoding = response.getFirstHeader("Content-Encoding");
-					if (contentEncoding != null && contentEncoding.getValue().equals("gzip")) {
-						inputStream = new GZIPInputStream(inputStream);
-					}
-					int count = inputStream.read(data);
-					while (count > 0) {
-						outputStream.write(data, 0, count);
-						count = inputStream.read(data);
-					}
-				} finally {
-					if (inputStream != null) {
-						inputStream.close();
-					}
+				inputStream = entity.getContent();
+				// "Transfer-Encoding: chunked" 已经在conn.receiveResponseEntity(response)处理了，所以不要处理
+				// "Content-Encoding: gzip"
+				Header contentEncoding = response.getFirstHeader("Content-Encoding");
+				if (contentEncoding != null && contentEncoding.getValue().equals("gzip")) {
+					inputStream = new GZIPInputStream(inputStream);
 				}
-			} catch (IllegalStateException | IOException e) {
-				e.printStackTrace();
+				int count = inputStream.read(data);
+				while (count > 0) {
+					outputStream.write(data, 0, count);
+					count = inputStream.read(data);
+				}
+			} finally {
+				if (inputStream != null) {
+					inputStream.close();
+				}
 			}
 		} catch (Exception e) {
 			logger.error("exception has throwed when saved to DB. case {}", e.getMessage());
+			throw e;
 		}
 	}
 
