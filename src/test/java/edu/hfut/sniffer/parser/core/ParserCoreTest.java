@@ -11,13 +11,12 @@ import org.junit.Test;
 
 import edu.hfut.frame.domain.Frame;
 import edu.hfut.frame.reader.PcapReader;
-import edu.hfut.sniffer.parser.core.ParserCore;
 import edu.hfut.sniffer.parser.util.Configs;
 
 public class ParserCoreTest {
 
 	//	private static final String TEST_HTTP = "src/test/resources/http.pcap";
-	private static final String TEST_HTTP = "src/test/resources/xqfeng_http.pcap";
+	private static final String TEST_HTTP = "src/test/resources/http_multi.pcap";
 	private static final String TEST_HTTPGZIP = "src/test/resources/http_gzip.pcap";
 	private static final String TEST_POP3 = "src/test/resources/pop_attach.pcap";
 	private static final String TEST_SMTP = "src/test/resources/smtp_attach.pcap";
