@@ -6,9 +6,9 @@
 
 ## 提取结果展示
 
-<img src="https://coding.net/u/hwdlei/p/pages/git/blob/master/%E8%BF%98%E5%8E%9F%E6%96%87%E4%BB%B6.png" width="400" height="100">
+<img src="https://coding.net/u/hwdlei/p/pages/git/raw/master/%25E8%25BF%2598%25E5%258E%259F%25E6%2596%2587%25E4%25BB%25B6.png" width="400" height="100">
 
-<img src="https://coding.net/u/hwdlei/p/pages/git/blob/master/%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9.png" width="400" height="100">
+<img src="https://coding.net/u/hwdlei/p/pages/git/raw/master/%25E6%2596%2587%25E4%25BB%25B6%25E5%2586%2585%25E5%25AE%25B9.png" width="400" height="100">
 
 
 ## 联系方式
