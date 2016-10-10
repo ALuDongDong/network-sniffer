@@ -8,7 +8,7 @@
 		</encoder>
 		<!-- 只输出level级别的日志 -->
 		<filter class="ch.qos.logback.classic.filter.LevelFilter">
-			<level>INFO</level>
+			<level>ERROR</level>
 			<onMatch>ACCEPT</onMatch>
 			<onMismatch>DENY</onMismatch>
 		</filter>
@@ -22,7 +22,7 @@
 		</encoder>
 		<!-- 只输出level级别以上的日志 -->
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-			<level>INFO</level>
+			<level>ERROR</level>
 		</filter>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<fileNamePattern>logs/network-sniffer.log.%d{yyyy-MM-dd}.gz</fileNamePattern>

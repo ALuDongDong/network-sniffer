@@ -14,8 +14,6 @@ import edu.hfut.frame.domain.Frame;
 import edu.hfut.frame.domain.FrameConstant;
 import edu.hfut.frame.domain.SequencePayload;
 import edu.hfut.sniffer.cache.MemoryCache;
-import edu.hfut.sniffer.parser.domain.Buffer;
-import edu.hfut.sniffer.parser.domain.ChainBuffer;
 import edu.hfut.sniffer.parser.domain.ProcessStatus;
 import edu.hfut.sniffer.parser.domain.Protocol;
 import edu.hfut.sniffer.payload.parser.IPayloadParser;
@@ -50,11 +48,6 @@ public class ParserCore {
 	private MemoryCache<Flow, Frame> lastFrames;
 
 	private TcpProtocolMapper protocolMapper;
-
-	/**
-	 * just for log
-	 */
-	private int count = 0;
 
 	public ParserCore() {
 		this.cache = new MemoryCache<>();
@@ -93,13 +86,6 @@ public class ParserCore {
 				} catch (ExecutionException e) {
 					logger.error(e.getMessage());
 				}
-			}
-			count++;
-			if (count % 100 == 0) {
-				logger.info("cache count : " + this.cache.size());
-				logger.info("cache stats : \n" + this.cache.toString());
-				logger.info("awks count : " + this.awks.size());
-				logger.info("awks stats : \n" + this.cache.toString());
 			}
 
 			if ((Boolean) frame.getFlags(FrameConstant.TCP_FLAG_FIN)
@@ -161,7 +147,6 @@ public class ParserCore {
 		} else if (code.matches("")) {
 		}
 		return null;
-
 	}
 
 	private ProcessStatus sendToApplicationLayer(Frame frame, byte[] packetPayload) {
@@ -189,26 +174,6 @@ public class ParserCore {
 			}
 		}
 		return ProcessStatus.MORE;
-	}
-
-	@SuppressWarnings("unused")
-	private void nonStandardPort(Protocol protocol, byte[] payload) {
-		if (protocol == Protocol.HTTP) {
-			Buffer buffer = new ChainBuffer(payload);
-			int length = buffer.bytesBefore(new byte[] { 0x0d, 0x0a });
-			if (length != 0) {
-				byte[] reply = new byte[length];
-				buffer.gets(reply, 0, length);
-				String str = new String(reply);
-				String head = str.length() > 4 ? str.substring(0, 4) : "";
-				if (str.toLowerCase().contains("ftp") || head.equalsIgnoreCase("USER") || head.equalsIgnoreCase("PASS")
-						|| head.equalsIgnoreCase("PWD") || head.equalsIgnoreCase("LIST")
-						|| head.equalsIgnoreCase("PORT") || head.equalsIgnoreCase("RETR")
-						|| head.equalsIgnoreCase("STOR")) {
-
-				}
-			}
-		}
 	}
 
 	private boolean isConsequent(Frame frame, Flow flow) {
