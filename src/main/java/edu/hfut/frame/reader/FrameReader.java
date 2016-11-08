@@ -10,7 +10,6 @@ import static edu.hfut.frame.domain.ReaderConstant.IPV6_DST_OFFSET;
 import static edu.hfut.frame.domain.ReaderConstant.IPV6_FLAGS_OFFSET;
 import static edu.hfut.frame.domain.ReaderConstant.IPV6_FRAGMENT_OFFSET;
 import static edu.hfut.frame.domain.ReaderConstant.IPV6_HEADER_SIZE;
-import static edu.hfut.frame.domain.ReaderConstant.IPV6_HOPLIMIT_OFFSET;
 import static edu.hfut.frame.domain.ReaderConstant.IPV6_ID_OFFSET;
 import static edu.hfut.frame.domain.ReaderConstant.IPV6_NEXTHEADER_OFFSET;
 import static edu.hfut.frame.domain.ReaderConstant.IPV6_PAYLOAD_LEN_OFFSET;
@@ -22,7 +21,6 @@ import static edu.hfut.frame.domain.ReaderConstant.IP_ID_OFFSET;
 import static edu.hfut.frame.domain.ReaderConstant.IP_PROTOCOL_OFFSET;
 import static edu.hfut.frame.domain.ReaderConstant.IP_SRC_OFFSET;
 import static edu.hfut.frame.domain.ReaderConstant.IP_TOTAL_LEN_OFFSET;
-import static edu.hfut.frame.domain.ReaderConstant.IP_TTL_OFFSET;
 import static edu.hfut.frame.domain.ReaderConstant.IP_VHL_OFFSET;
 import static edu.hfut.frame.domain.ReaderConstant.PACKET_HEADER_SIZE;
 import static edu.hfut.frame.domain.ReaderConstant.PACKET_LEN_OFFSET;
@@ -48,10 +46,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import edu.hfut.frame.domain.Frame;
+import edu.hfut.frame.domain.Frame.FrameBuilder;
 import edu.hfut.frame.domain.FrameConstant;
 import edu.hfut.frame.domain.LinkType;
 import edu.hfut.frame.domain.ReaderConstant;
-import edu.hfut.frame.domain.Frame.FrameBuilder;
 import edu.hfut.frame.util.PcapReaderUtil;
 
 /**
@@ -64,7 +62,6 @@ public class FrameReader {
 	private static final Logger logger = LoggerFactory.getLogger(FrameReader.class);
 
 	private ByteBuffer data;
-	private boolean eof;
 
 	// To read reversed-endian PCAPs; the header is the only part that switches
 	private boolean reverseHeaderByteOrder = false;
@@ -91,7 +88,6 @@ public class FrameReader {
 			return true;
 		} catch (BufferUnderflowException e) {
 			// Reached the end of the stream
-			this.eof = true;
 			return false;
 		}
 	}
@@ -169,8 +165,6 @@ public class FrameReader {
 			builder.addFlags(FrameConstant.FRAGMENT, false);
 		}
 
-		int ttl = packetData[ipStart + IP_TTL_OFFSET] & 0xFF;
-
 		int protocol = packetData[ipStart + IP_PROTOCOL_OFFSET];
 		builder.setTransProto(PcapReaderUtil.convertProtocolIdentifier(protocol));
 
@@ -182,8 +176,6 @@ public class FrameReader {
 	}
 
 	private void buildInternetProtocolV6Packet(FrameBuilder builder, byte[] packetData, int ipStart) {
-		int ttl = packetData[ipStart + IPV6_HOPLIMIT_OFFSET] & 0xFF;
-
 		int protocol = packetData[ipStart + IPV6_NEXTHEADER_OFFSET];
 		builder.setTransProto(PcapReaderUtil.convertProtocolIdentifier(protocol));
 

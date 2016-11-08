@@ -36,7 +36,7 @@ public class FrameReaderTest {
 		return kafkaData;
 	}
 
-	//	@Test
+	@Test
 	public void testArp() {
 		byte[] kafkaData = generateKafkaData("src/test/resources/ARP.pcap");
 		FrameReader reader = new FrameReader(kafkaData);
@@ -46,14 +46,12 @@ public class FrameReaderTest {
 		Assert.assertTrue(frame.getDesMac().equals("16:58:70:27:42:39"));
 		Assert.assertTrue(frame.getSrcIp().equals("10.18.22.13"));
 		Assert.assertTrue(frame.getDesIp().equals("10.18.22.1"));
-		//		System.out.println(reader.nextFrame());
 	}
 
-	//	@Test
+	@Test
 	public void testIcmp() {
 		byte[] kafkaData = generateKafkaData("src/test/resources/ICMP.pcap");
 		FrameReader reader = new FrameReader(kafkaData);
-		//		System.out.println(reader.nextFrame());
 		Frame frame = reader.nextFrame();
 		Assert.assertTrue(frame.getInterProto().equals("IPv4"));
 		Assert.assertTrue(frame.getSrcMac().equals("00:0C:29:78:7E:65"));
@@ -64,11 +62,10 @@ public class FrameReaderTest {
 		Assert.assertTrue(frame.getFlags("icmp_type").equals(8));
 	}
 
-	//	@Test
+	@Test
 	public void testUdp() {
 		byte[] kafkaData = generateKafkaData("src/test/resources/UDP.pcap");
 		FrameReader reader = new FrameReader(kafkaData);
-		//		System.out.println(reader.nextFrame());
 		Frame frame = reader.nextFrame();
 		Assert.assertTrue(frame.getInterProto().equals("IPv4"));
 		Assert.assertTrue(frame.getSrcMac().equals("90:2B:34:32:02:60"));
@@ -81,11 +78,10 @@ public class FrameReaderTest {
 		Assert.assertTrue(frame.getPayload().length == 362);
 	}
 
-	//	@Test
+	@Test
 	public void testTcpNopayload() {
 		byte[] kafkaData = generateKafkaData("src/test/resources/TCP_nopayload.pcap");
 		FrameReader reader = new FrameReader(kafkaData);
-		//		System.out.println(reader.nextFrame());
 		Frame frame = reader.nextFrame();
 		Assert.assertTrue(frame.getInterProto().equals("IPv4"));
 		Assert.assertTrue(frame.getSrcMac().equals("40:8D:5C:BF:4C:6E"));
@@ -102,7 +98,6 @@ public class FrameReaderTest {
 	public void testTcpPayload() {
 		byte[] kafkaData = generateKafkaData("src/test/resources/TCP_payload.pcap");
 		FrameReader reader = new FrameReader(kafkaData);
-		//		System.out.println(reader.nextFrame());
 		Frame frame = reader.nextFrame();
 		Assert.assertTrue(frame.getInterProto().equals("IPv4"));
 		Assert.assertTrue(frame.getSrcMac().equals("90:2B:34:32:02:60"));

@@ -10,7 +10,6 @@ import static edu.hfut.frame.domain.ReaderConstant.IPV6_DST_OFFSET;
 import static edu.hfut.frame.domain.ReaderConstant.IPV6_FLAGS_OFFSET;
 import static edu.hfut.frame.domain.ReaderConstant.IPV6_FRAGMENT_OFFSET;
 import static edu.hfut.frame.domain.ReaderConstant.IPV6_HEADER_SIZE;
-import static edu.hfut.frame.domain.ReaderConstant.IPV6_HOPLIMIT_OFFSET;
 import static edu.hfut.frame.domain.ReaderConstant.IPV6_ID_OFFSET;
 import static edu.hfut.frame.domain.ReaderConstant.IPV6_NEXTHEADER_OFFSET;
 import static edu.hfut.frame.domain.ReaderConstant.IPV6_PAYLOAD_LEN_OFFSET;
@@ -22,7 +21,6 @@ import static edu.hfut.frame.domain.ReaderConstant.IP_ID_OFFSET;
 import static edu.hfut.frame.domain.ReaderConstant.IP_PROTOCOL_OFFSET;
 import static edu.hfut.frame.domain.ReaderConstant.IP_SRC_OFFSET;
 import static edu.hfut.frame.domain.ReaderConstant.IP_TOTAL_LEN_OFFSET;
-import static edu.hfut.frame.domain.ReaderConstant.IP_TTL_OFFSET;
 import static edu.hfut.frame.domain.ReaderConstant.IP_VHL_OFFSET;
 import static edu.hfut.frame.domain.ReaderConstant.MAGIC_NUMBER;
 import static edu.hfut.frame.domain.ReaderConstant.PACKET_HEADER_SIZE;
@@ -48,7 +46,6 @@ import static edu.hfut.frame.domain.ReaderConstant.UDP_HEADER_SIZE;
 import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.IOException;
-import java.math.MathContext;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -64,11 +61,11 @@ import edu.hfut.frame.domain.Datagram;
 import edu.hfut.frame.domain.DatagramPayload;
 import edu.hfut.frame.domain.Flow;
 import edu.hfut.frame.domain.Frame;
+import edu.hfut.frame.domain.Frame.FrameBuilder;
 import edu.hfut.frame.domain.FrameConstant;
 import edu.hfut.frame.domain.LinkType;
 import edu.hfut.frame.domain.ReaderConstant;
 import edu.hfut.frame.domain.SequencePayload;
-import edu.hfut.frame.domain.Frame.FrameBuilder;
 import edu.hfut.frame.util.PcapReaderUtil;
 
 /**
@@ -85,8 +82,6 @@ public class PcapReader implements Iterable<Frame> {
 	private LinkType linkType;
 	private long snapLen;
 	private boolean caughtEOF = false;
-
-	private MathContext tsUsecMc = new MathContext(16);
 
 	//To read reversed-endian PCAPs; the header is the only part that switches
 	private boolean reverseHeaderByteOrder = false;
@@ -497,8 +492,6 @@ public class PcapReader implements Iterable<Frame> {
 			builder.addFlags(FrameConstant.FRAGMENT, false);
 		}
 
-		int ttl = packetData[ipStart + IP_TTL_OFFSET] & 0xFF;
-
 		int protocol = packetData[ipStart + IP_PROTOCOL_OFFSET];
 		builder.setTransProto(PcapReaderUtil.convertProtocolIdentifier(protocol));
 
@@ -510,8 +503,6 @@ public class PcapReader implements Iterable<Frame> {
 	}
 
 	private void buildInternetProtocolV6Packet(FrameBuilder builder, byte[] packetData, int ipStart) {
-		int ttl = packetData[ipStart + IPV6_HOPLIMIT_OFFSET] & 0xFF;
-
 		int protocol = packetData[ipStart + IPV6_NEXTHEADER_OFFSET];
 		builder.setTransProto(PcapReaderUtil.convertProtocolIdentifier(protocol));
 

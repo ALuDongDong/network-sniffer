@@ -22,6 +22,8 @@ import org.slf4j.LoggerFactory;
  */
 public class PcapReaderUtil {
 
+	private static final char[] hexCode = "0123456789ABCDEF".toCharArray();
+
 	private static final Logger logger = LoggerFactory.getLogger(PcapReaderUtil.class);
 
 	private static Map<Integer, String> protocols;
@@ -107,25 +109,18 @@ public class PcapReaderUtil {
 	 * @return a String
 	 */
 	public static String getMacAddress(byte[] source) {
-		StringBuilder str = new StringBuilder();
+		StringBuilder r = new StringBuilder(source.length * 3);
 		try {
-			String rawString = javax.xml.bind.DatatypeConverter.printHexBinary(source);
-			str.append(rawString);
-			int n = 0;
-			for (int i = 0; i < str.length(); i++) {
-				if (n == 2) {
-					str.insert(i, ':');
-					n = 0;
-				} else {
-					n++;
-				}
+			for (byte b : source) {
+				r.append(hexCode[(b >> 4) & 0xF]);
+				r.append(hexCode[(b & 0xF)]);
+				r.append(':');
 			}
-
+			r.deleteCharAt(source.length * 3 - 1);
 		} catch (Exception e) {
 			logger.error("An error has occured while parsing a MAC address");
 		}
-
-		return str.toString();
+		return r.toString();
 	}
 
 }
